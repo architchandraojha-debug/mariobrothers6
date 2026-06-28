@@ -2,90 +2,54 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Our Group Website</title>
+  <title>Group Website</title>
   <style>
-    body { font-family: Arial, sans-serif; background: #f4f4f4; text-align: center; }
     .hidden { display: none; }
-    .box { border: 1px solid #ccc; padding: 20px; margin: 20px auto; width: 400px; border-radius: 8px; background: #fff; }
-    input, button { padding: 8px; margin-top: 10px; width: 90%; }
-    h1 { color: #333; }
   </style>
 </head>
 <body>
-  <h1>Welcome to Our Group</h1>
-
-  <!-- Join Request Form -->
-  <div class="box" id="join-form">
-    <h2>Request to Join</h2>
-    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScV61TaoYrfxElDlVkLQwyT7-jSsdV5GbAI4Ru53l8t1ttiJA/viewform?usp=headerviewform?embedded=true" 
-            width="100%" height="500" frameborder="0" marginheight="0" marginwidth="0">
-      Loading…
-    </iframe>
-    <button onclick="markFormFilled()">I have submitted the form</button>
+  <!-- Join Form Section -->
+  <div id="join-form">
+    <!-- Paste the Formfacade embed code here -->
+    <!-- Example: -->
+    <!-- <iframe src="<div id="ff-compose"></div>
+<script async defer src="https://formfacade.com/include/113273004395302191588/form/1FAIpQLScV61TaoYrfxElDlVkLQwyT7-jSsdV5GbAI4Ru53l8t1ttiJA/classic.js?div=ff-compose"></script>" width="640" height="800" frameborder="0"></iframe> -->
   </div>
 
-  <!-- PIN Entry -->
-  <div class="box" id="pin-section">
-    <h2>Enter PIN</h2>
-    <input type="password" id="pinInput" placeholder="Enter PIN">
+  <!-- PIN Section -->
+  <div id="pin-section" class="hidden">
+    <h2>Enter PIN to Access</h2>
+    <input type="password" id="pin-input" placeholder="Enter PIN">
     <button onclick="checkPin()">Submit</button>
-    <p id="pinMessage"></p>
-  </div>
-
-  <!-- Notice Board -->
-  <div class="box hidden" id="notice-board">
-    <h2>Group Notice Board</h2>
-    <p><strong>Notice 1:</strong> Welcome to our new made group guys!</p>
-    <p><strong>Notice 2:</strong> The group is new so you can face some glitches.</p>
-    <p><strong>Notice 3;</strong> If you have any problem regarding the group, contact Archit Chandra Ojha of 6A.</p>
-    <button onclick="throwOut()">Throw Out Member</button>
+    <p id="pin-message"></p>
   </div>
 
   <script>
-    // Approved member PINs
-    let validPins = { "TECHNOLOGIA": true, "AURA COMES BACK": true, "spiderman":true "THIS IS THE END":true ,"RADHE RADHE": true,"LOL":true, "DHURANDHAR":true};
-
-    // Admin PIN
-    const adminPin = "SUPERADMIN456";
-
-    // On page load, check if form was already filled
     window.onload = function() {
+      const params = new URLSearchParams(window.location.search);
+
+      // If redirected after form submission, set flag
+      if (params.get("formFilled") === "true") {
+        localStorage.setItem("formFilled", "true");
+      }
+
+      // Check localStorage to decide what to show
       if (localStorage.getItem("formFilled") === "true") {
         document.getElementById("join-form").classList.add("hidden");
+        document.getElementById("pin-section").classList.remove("hidden");
       }
     };
 
-    // Mark form as filled (user clicks after submitting Google Form)
-    function markFormFilled() {
-      localStorage.setItem("formFilled", "true");
-      document.getElementById("join-form").classList.add("hidden");
-      alert("Form marked as submitted. Next time you’ll only see the PIN box.");
-    }
-
-    // PIN check
     function checkPin() {
-      const pin = document.getElementById("pinInput").value.trim();
-      if (validPins[pin]) {
-        document.getElementById("pin-section").classList.add("hidden");
-        document.getElementById("notice-board").classList.remove("hidden");
-      } else {
-        document.getElementById("pinMessage").innerText = "Invalid PIN.";
-      }
-    }
+      const pin = document.getElementById("pin-input").value;
+      const message = document.getElementById("pin-message");
 
-    // Throw out feature with admin PIN protection
-    function throwOut() {
-      const enteredAdminPin = prompt("Enter ADMIN PIN to continue:");
-      if (enteredAdminPin === adminPin) {
-        const pinToRemove = prompt("Enter the PIN of the member to throw out:");
-        if (pinToRemove && validPins[pinToRemove]) {
-          delete validPins[pinToRemove];
-          alert("Member with PIN " + pinToRemove + " has been thrown out.");
-        } else {
-          alert("PIN not found or already removed.");
-        }
+      // Replace "1234" with your actual PIN
+      if (pin === "1234") {
+        message.textContent = "Access granted!";
+        // Redirect or show protected content here
       } else {
-        alert("Incorrect ADMIN PIN. Access denied.");
+        message.textContent = "Incorrect PIN. Try again.";
       }
     }
   </script>
