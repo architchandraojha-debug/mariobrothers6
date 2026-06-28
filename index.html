@@ -7,21 +7,21 @@
     body { font-family: Arial, sans-serif; background: #f4f4f4; text-align: center; }
     .hidden { display: none; }
     .box { border: 1px solid #ccc; padding: 20px; margin: 20px auto; width: 400px; border-radius: 8px; background: #fff; }
-    input, textarea, button { padding: 8px; margin-top: 10px; width: 90%; }
+    input, button { padding: 8px; margin-top: 10px; width: 90%; }
     h1 { color: #333; }
   </style>
 </head>
 <body>
   <h1>Welcome to MARIO BROTHERS</h1>
 
-  <!-- Join Request Form (Google Form Embed) -->
+  <!-- Join Request Form -->
   <div class="box" id="join-form">
     <h2>Request to Join</h2>
-    <!-- Replace the src below with your Google Form's embed link -->
-    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScV61TaoYrfxElDlVkLQwyT7-jSsdV5GbAI4Ru53l8t1ttiJA/viewform?usp=headerviewform?embedded=true" 
+    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScV61TaoYrfxElDlVkLQwyT7-jSsdV5GbAI4Ru53l8t1ttiJA/viewform?usp=header/viewform?embedded=true" 
             width="100%" height="500" frameborder="0" marginheight="0" marginwidth="0">
       Loading…
     </iframe>
+    <button onclick="markFormFilled()">I have submitted the form</button>
   </div>
 
   <!-- PIN Entry -->
@@ -37,35 +37,51 @@
     <h2>Group Notice Board</h2>
     <p><strong>Notice 1:</strong> Welcome new members!</p>
     <p><strong>Notice 2:</strong> Meeting scheduled for Friday.</p>
-    <!-- Throw Out Feature -->
     <button onclick="throwOut()">Throw Out Member</button>
   </div>
 
   <script>
-    // Approved PINs (you control who gets them)
-    let validPins = { "TECHNOLOGIA": true, "1234": true };
+    // Approved member PINs
+    let validPins = { "TECHNOLOGIA" :true, "AURA COMES BACK": true,   "spiderman":true, ",  " THIS IS THE END": true, " RADHE RADHE": true, "LOL": true,  "DHURANDHAR": true   };
+
+    // Admin PIN
+    const adminPin = "SUPERADMIN456";
+
+    // Check if user already filled the form before
+    window.onload = function() {
+      if (localStorage.getItem("formFilled") === "true") {
+        document.getElementById("join-form").classList.add("hidden");
+      }
+    };
+
+    function markFormFilled() {
+      localStorage.setItem("formFilled", "true");
+      document.getElementById("join-form").classList.add("hidden");
+      alert("Form marked as submitted. Next time you’ll only see the PIN box.");
+    }
 
     function checkPin() {
       const pin = document.getElementById("pinInput").value.trim();
       if (validPins[pin]) {
-        // Hide PIN section and join form
         document.getElementById("pin-section").classList.add("hidden");
-        document.getElementById("join-form").classList.add("hidden");
-        // Show Notice Board
         document.getElementById("notice-board").classList.remove("hidden");
       } else {
         document.getElementById("pinMessage").innerText = "Invalid PIN.";
       }
     }
 
-    // Throw out feature: removes a PIN from the valid list
     function throwOut() {
-      const pinToRemove = prompt("Enter the PIN of the member to throw out:");
-      if (pinToRemove && validPins[pinToRemove]) {
-        delete validPins[pinToRemove];
-        alert("Member with PIN " + pinToRemove + " has been thrown out.");
+      const enteredAdminPin = prompt("Enter ADMIN PIN to continue:");
+      if (enteredAdminPin === adminPin) {
+        const pinToRemove = prompt("Enter the PIN of the member to throw out:");
+        if (pinToRemove && validPins[pinToRemove]) {
+          delete validPins[pinToRemove];
+          alert("Member with PIN " + pinToRemove + " has been thrown out.");
+        } else {
+          alert("PIN not found or already removed.");
+        }
       } else {
-        alert("PIN not found or already removed.");
+        alert("Incorrect ADMIN PIN. Access denied.");
       }
     }
   </script>
