@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>MARIO BROTHERS</title>
+  <title>Our Group Website</title>
   <style>
     body { font-family: Arial, sans-serif; background: #f4f4f4; text-align: center; }
     .hidden { display: none; }
@@ -12,12 +12,12 @@
   </style>
 </head>
 <body>
-  <h1>Welcome to MARIO BROTHERS</h1>
+  <h1>Welcome to Our Group</h1>
 
   <!-- Join Request Form -->
   <div class="box" id="join-form">
     <h2>Request to Join</h2>
-    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScV61TaoYrfxElDlVkLQwyT7-jSsdV5GbAI4Ru53l8t1ttiJA/viewform?usp=header/viewform?embedded=true" 
+    <iframe src="https://docs.google.com/forms/d/e/1FAIpQLScV61TaoYrfxElDlVkLQwyT7-jSsdV5GbAI4Ru53l8t1ttiJA/viewform?usp=headerviewform?embedded=true" 
             width="100%" height="500" frameborder="0" marginheight="0" marginwidth="0">
       Loading…
     </iframe>
@@ -35,31 +35,34 @@
   <!-- Notice Board -->
   <div class="box hidden" id="notice-board">
     <h2>Group Notice Board</h2>
-    <p><strong>Notice 1:</strong> Welcome new members!</p>
-    <p><strong>Notice 2:</strong> Meeting scheduled for Friday.</p>
+    <p><strong>Notice 1:</strong> Welcome to our new made group guys!</p>
+    <p><strong>Notice 2:</strong> The group is new so you can face some glitches.</p>
+    <p><strong>Notice 3;</strong> If you have any problem regarding the group, contact Archit Chandra Ojha of 6A.</p>
     <button onclick="throwOut()">Throw Out Member</button>
   </div>
 
   <script>
     // Approved member PINs
-    let validPins = { "TECHNOLOGIA" :true, "AURA COMES BACK": true,   "spiderman":true, ",  " THIS IS THE END": true, " RADHE RADHE": true, "LOL": true,  "DHURANDHAR": true   };
+    let validPins = { "TECHNOLOGIA": true, "AURA COMES BACK": true, "spiderman":true "THIS IS THE END":true ,"RADHE RADHE": true,"LOL":true, "DHURANDHAR":true};
 
     // Admin PIN
     const adminPin = "SUPERADMIN456";
 
-    // Check if user already filled the form before
+    // On page load, check if form was already filled
     window.onload = function() {
       if (localStorage.getItem("formFilled") === "true") {
         document.getElementById("join-form").classList.add("hidden");
       }
     };
 
+    // Mark form as filled (user clicks after submitting Google Form)
     function markFormFilled() {
       localStorage.setItem("formFilled", "true");
       document.getElementById("join-form").classList.add("hidden");
       alert("Form marked as submitted. Next time you’ll only see the PIN box.");
     }
 
+    // PIN check
     function checkPin() {
       const pin = document.getElementById("pinInput").value.trim();
       if (validPins[pin]) {
@@ -70,6 +73,7 @@
       }
     }
 
+    // Throw out feature with admin PIN protection
     function throwOut() {
       const enteredAdminPin = prompt("Enter ADMIN PIN to continue:");
       if (enteredAdminPin === adminPin) {
